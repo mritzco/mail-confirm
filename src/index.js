@@ -1,5 +1,5 @@
 /**
- * @title MailConfirm  
+ * @title MailConfirm
  * @author Elias Hussary <eliashussary@gmail.com>
  * @license MIT
  * @copyright (C) 2017 Elias Hussary
@@ -52,11 +52,11 @@ class MailConfirm {
 
   /**
    * Determines if the email address pattern is valid based on regex and invalid keyword check.
-   * 
+   *
    * @static
    * @param {string} emailAddress - The full email address ypu want to check.
    * @param {string[]} [invalidMailboxKeywords=[]] - An array of keywords to invalidate your check, ie. noreply, noemail, etc.
-   * @returns {boolean} 
+   * @returns {boolean}
    * @memberof MailConfirm
    */
   static resolvePattern(emailAddress, invalidMailboxKeywords = []) {
@@ -74,7 +74,7 @@ class MailConfirm {
 
   /**
    * Wrap of dns.resolveMx native method.
-   * 
+   *
    * @static
    * @param {string} hostname - The hostname you want to resolve, i.e. gmail.com
    * @returns {Object[]} - Returns MX records array { priority, exchange }
@@ -97,7 +97,7 @@ class MailConfirm {
 
   /**
    * Runs the SMTP mailbox check. Commands for HELO/EHLO, MAIL FROM, RCPT TO.
-   * 
+   *
    * @static
    * @param {Object} config - Object of parameters for Smtp Mailbox resolution.
    * @param {string} config.emailAddress - The email address you want to check.
@@ -113,7 +113,8 @@ class MailConfirm {
       const commands = [
         `HELO ${host}`,
         `MAIL FROM: <${mailFrom}>`,
-        `RCPT TO: <${emailAddress}>`
+        `RCPT TO: <${emailAddress}>`,
+        `RCPT TO: <${emailAddress}>`,
       ]
 
       const stepMax = commands.length - 1
@@ -166,7 +167,7 @@ class MailConfirm {
 
   /**
    * Runs the email validation routine and supplies a final result.
-   * 
+   *
    * @returns {Object} - The instance state object containing all of the isValid* boolean checks, MX Records, and SMTP Messages.
    * @memberof MailConfirm
    */
@@ -208,11 +209,11 @@ class MailConfirm {
         mailFrom
       })
       this.state.smtpMessages = smtpMessages
-      const isComplete = smtpMessages.length === 3
+      const isComplete = smtpMessages.length === 4
       let result = ''
 
       if (isComplete) {
-        const { status } = smtpMessages[2]
+        const { status } = smtpMessages[3]
         // OK RESPONSE
         if (status === 250) {
           result = 'Mailbox is valid.'

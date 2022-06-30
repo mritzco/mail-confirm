@@ -11,7 +11,7 @@ var _net2 = _interopRequireDefault(_net);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; } /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                            * @title MailConfirm  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            * @title MailConfirm
                                                                                                                                                                                                                                                                                                                                                                                                                                                                             * @author Elias Hussary <eliashussary@gmail.com>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                             * @license MIT
                                                                                                                                                                                                                                                                                                                                                                                                                                                                             * @copyright (C) 2017 Elias Hussary
@@ -62,11 +62,11 @@ class MailConfirm {
 
   /**
    * Determines if the email address pattern is valid based on regex and invalid keyword check.
-   * 
+   *
    * @static
    * @param {string} emailAddress - The full email address ypu want to check.
    * @param {string[]} [invalidMailboxKeywords=[]] - An array of keywords to invalidate your check, ie. noreply, noemail, etc.
-   * @returns {boolean} 
+   * @returns {boolean}
    * @memberof MailConfirm
    */
   static resolvePattern(emailAddress, invalidMailboxKeywords = []) {
@@ -83,7 +83,7 @@ class MailConfirm {
 
   /**
    * Wrap of dns.resolveMx native method.
-   * 
+   *
    * @static
    * @param {string} hostname - The hostname you want to resolve, i.e. gmail.com
    * @returns {Object[]} - Returns MX records array { priority, exchange }
@@ -110,7 +110,7 @@ class MailConfirm {
 
   /**
    * Runs the SMTP mailbox check. Commands for HELO/EHLO, MAIL FROM, RCPT TO.
-   * 
+   *
    * @static
    * @param {Object} config - Object of parameters for Smtp Mailbox resolution.
    * @param {string} config.emailAddress - The email address you want to check.
@@ -123,7 +123,7 @@ class MailConfirm {
   static resolveSmtpMailbox({ emailAddress, mxRecords, timeout, mailFrom }) {
     return new Promise((resolve, reject) => {
       const host = mxRecords[0].exchange;
-      const commands = [`HELO ${host}`, `MAIL FROM: <${mailFrom}>`, `RCPT TO: <${emailAddress}>`];
+      const commands = [`HELO ${host}`, `MAIL FROM: <${mailFrom}>`, `RCPT TO: <${emailAddress}>`, `RCPT TO: <${emailAddress}>`];
 
       const stepMax = commands.length - 1;
       let step = 0;
@@ -175,7 +175,7 @@ class MailConfirm {
 
   /**
    * Runs the email validation routine and supplies a final result.
-   * 
+   *
    * @returns {Object} - The instance state object containing all of the isValid* boolean checks, MX Records, and SMTP Messages.
    * @memberof MailConfirm
    */
@@ -217,11 +217,11 @@ class MailConfirm {
           mailFrom
         });
         _this.state.smtpMessages = smtpMessages;
-        const isComplete = smtpMessages.length === 3;
+        const isComplete = smtpMessages.length === 4;
         let result = '';
 
         if (isComplete) {
-          const { status } = smtpMessages[2];
+          const { status } = smtpMessages[3];
           // OK RESPONSE
           if (status === 250) {
             result = 'Mailbox is valid.';
